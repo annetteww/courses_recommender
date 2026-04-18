@@ -1,0 +1,63 @@
+{% extends 'courses/base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center">
+                <h2>Подберите курсы под себя</h2>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'recommend' %}" id="studentForm">
+                    {% csrf_token %}
+
+                    <div class="mb-4">
+                        <button type="button" class="btn btn-success" onclick="parseCourses()">
+                            Загрузить курсы с do.rea.ru
+                        </button>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Курс обучения:</label>
+                            <select name="course_level" class="form-select" required>
+                                <option value="">Выберите...</option>
+                                <option value="бакалавр">Бакалавр</option>
+                                <option value="магистр">Магистр</option>
+                                <option value="специалист">Специалист</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Направление:</label>
+                            <input type="text" name="direction" class="form-control"
+                                   placeholder="Например: Экономика, IT, Маркетинг" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Интересы (через запятую):</label>
+                        <textarea name="interests" class="form-control" rows="4"
+                                  placeholder="Например: программирование, data science, дизайн" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                        Найти подходящие курсы
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function parseCourses() {
+    fetch('/parse/', {method: 'POST'})
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(`Загружено ${data.parsed} курсов!`);
+            }
+        });
+}
+</script>
+{% endblock %}
