@@ -82,6 +82,7 @@
     <Folder Include="templates\courses\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".gitignore" />
     <Content Include="railway.json">
       <SubType>Code</SubType>
     </Content>
